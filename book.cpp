@@ -94,3 +94,27 @@ double readingTime(int pages, int pages_per_day) {
 bool isOlder(const Book& first, const Book& second) {
     return first.year() < second.year();
 }
+void swap_titles_by_balue(Book b1, Book b2) {
+    std::string tmp = b1.title();
+    b1.updateTitle(b2.title());
+    b2.updateTitle(tmp);
+}
+void swap_titles_by_reference(Book& b1, Book& b2) {
+    std::string tmp = b1.title();
+    b1.updateTitle(b2.title());
+    b2.updateTitle(tmp);
+}
+bool is_older(const Book& b1, const Book& b2) {
+    return b1.year() < b2.year();
+}
+void swap_titles_by_pointer(Book* b1, Book* b2) {
+    std::string tmp = b1->title();
+    b1->updateTitle(b2->title());
+    b2->updateTitle(tmp);
+}
+bool is_book_available(const Book* book) {
+    if (book == nullptr) {
+        return false;
+    }
+    return book->isAvailable();
+}
