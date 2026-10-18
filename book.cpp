@@ -35,6 +35,10 @@ int Book::pages() const {
 bool Book::isAvailable() const {
     return is_available_;
 }
+std::string Book::description() const {
+    return title_ + " by " + author_ + " (" + std::to_string(year_) + ", "
+        + std::to_string(pages_) + " pages)";
+}
 void Book::checkout() {
     is_available_ = false;
 }

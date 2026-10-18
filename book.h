@@ -11,6 +11,7 @@ public:
     int year() const;
     int pages() const;
     bool isAvailable() const;
+    std::string description() const;
 
     void checkout();
     void returnBook();
