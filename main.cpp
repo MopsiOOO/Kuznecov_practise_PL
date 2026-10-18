@@ -1,18 +1,29 @@
 #include <iostream>
+#include <stdexcept>
 
 #include "book.h"
-#include "ebook.h"
-
-void print_description(const Book& book) {
-    std::cout << book.description() << std::endl;
-}
 
 int main() {
-    Book b("1984", "George Orwell", 1949, 328);
-    Ebook eb("1984", "George Orwell", 1949, 328, "http://example.com/1984");
+    Book warAndPeace("Война и мир", "Л. Толстой", 1869);
+    Book nineteenEightyFour("1984", "Д. Оруэлл", 1949);
 
-    print_description(b);
-    print_description(eb);
+    std::cout << warAndPeace.getInfo() << std::endl;
+    warAndPeace.checkout();
+    std::cout << warAndPeace.getInfo() << std::endl;
+    std::cout << nineteenEightyFour.getInfo() << std::endl;
+
+    try {
+        Book invalidYear("Некорректная книга", "А. Автор", 3000);
+        std::cout << "Ошибка: исключение не выброшено!" << std::endl;
+    } catch (const std::invalid_argument& e) {
+        std::cerr << "Не удалось создать книгу: " << e.what() << std::endl;
+    }
+    try {
+        Book emptyTitle("", "А. Автор", 2000);
+        std::cout << "Ошибка: исключение не выброшено!" << std::endl;
+    } catch (const std::invalid_argument& e) {
+        std::cerr << "Не удалось создать книгу: " << e.what() << std::endl;
+    }
 
     return 0;
 }

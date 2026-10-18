@@ -1,22 +1,17 @@
 #include "book.h"
 
+#include <ctime>
 #include <stdexcept>
-namespace {
-constexpr int kMinYear = 1450;
-constexpr int kMaxYear = 2025;
-constexpr int kClassicCutoffYear = 1975;
-}
 
-Book::Book(std::string title, std::string author, int year, int pages)
+Book::Book(std::string title, std::string author, int year)
     : title_(std::move(title))
     , author_(std::move(author))
     , year_(year)
-    , pages_(pages)
     , is_available_(true)
 {
-    if (!isValidData(title_, author_, year_, pages_)) {
+    if (!isValidData(title_, author_, year_)) {
         throw std::invalid_argument("Invalid book data: title and author must be non-empty, "
-                                    "year must be between 1450 and 2025, pages must be > 0.");
+                                    "year must be between 1450 and the current year.");
     }
 }
 
@@ -29,96 +24,29 @@ std::string Book::author() const {
 int Book::year() const {
     return year_;
 }
-int Book::pages() const {
-    return pages_;
-}
 bool Book::isAvailable() const {
     return is_available_;
 }
-std::string Book::description() const {
-    return title_ + " by " + author_ + " (" + std::to_string(year_) + ", "
-        + std::to_string(pages_) + " pages)";
-}
+
 void Book::checkout() {
     is_available_ = false;
 }
 void Book::returnBook() {
     is_available_ = true;
 }
-void Book::updateTitle(std::string new_title) {
-    if (!isValidData(new_title, author_, year_, pages_)) {
-        throw std::invalid_argument("Invalid title: must be non-empty.");
-    }
-    title_ = std::move(new_title);
+
+std::string Book::getInfo() const {
+    return "Title: " + title_
+        + ", Author: " + author_
+        + ", Year: " + std::to_string(year_)
+        + ", Status: " + (is_available_ ? "Available" : "Checked Out");
 }
-void Book::updateAuthor(std::string new_author) {
-    if (!isValidData(title_, new_author, year_, pages_)) {
-        throw std::invalid_argument("Invalid author: must be non-empty.");
-    }
-    author_ = std::move(new_author);
-}
-void Book::updateYear(int new_year) {
-    if (!isValidData(title_, author_, new_year, pages_)) {
-        throw std::invalid_argument("Invalid year: must be between 1450 and 2025.");
-    }
-    year_ = new_year;
-}
-void Book::updatePages(int new_pages) {
-    if (!isValidData(title_, author_, year_, new_pages)) {
-        throw std::invalid_argument("Invalid pages: must be greater than 0.");
-    }
-    pages_ = new_pages;
-}
-bool Book::isValidData(const std::string& title, const std::string& author,
-                       int year, int pages) const {
+
+bool Book::isValidData(std::string title, std::string author, int year) {
     if (title.empty() || author.empty()) {
         return false;
     }
-    if (year < kMinYear || year > kMaxYear) {
-        return false;
-    }
-    return pages > 0;
-}
-std::string formatBookInfo(const Book& book) {
-    return "Title: " + book.title()
-        + ", Author: " + book.author()
-        + ", Year: " + std::to_string(book.year())
-        + ", Pages: " + std::to_string(book.pages())
-        + ", Status: " + (book.isAvailable() ? "Available" : "Checked Out");
-}
-bool isClassic(const Book& book) {
-    return book.year() < kClassicCutoffYear;
-}
-double readingTime(int pages, int pages_per_day) {
-    if (pages_per_day <= 0) {
-        throw std::invalid_argument("pages_per_day must be greater than 0.");
-    }
-    return static_cast<double>(pages) / pages_per_day;
-}
-bool isOlder(const Book& first, const Book& second) {
-    return first.year() < second.year();
-}
-void swap_titles_by_balue(Book b1, Book b2) {
-    std::string tmp = b1.title();
-    b1.updateTitle(b2.title());
-    b2.updateTitle(tmp);
-}
-void swap_titles_by_reference(Book& b1, Book& b2) {
-    std::string tmp = b1.title();
-    b1.updateTitle(b2.title());
-    b2.updateTitle(tmp);
-}
-bool is_older(const Book& b1, const Book& b2) {
-    return b1.year() < b2.year();
-}
-void swap_titles_by_pointer(Book* b1, Book* b2) {
-    std::string tmp = b1->title();
-    b1->updateTitle(b2->title());
-    b2->updateTitle(tmp);
-}
-bool is_book_available(const Book* book) {
-    if (book == nullptr) {
-        return false;
-    }
-    return book->isAvailable();
+    const std::time_t now = std::time(nullptr);
+    const int current_year = std::localtime(&now)->tm_year + 1900;
+    return year >= 1450 && year <= current_year;
 }
