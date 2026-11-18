@@ -2,13 +2,14 @@
 #define VECTOR2D_H
 
 #include <iostream>
+#include <string>
 
 class Vector2D {
 public:
     Vector2D(double x = 0.0, double y = 0.0);
     double x() const;
     double y() const;
-    double length() const;
+    virtual double length() const;
 
     Vector2D scale(double factor) const;
     Vector2D scale(double fx, double fy) const;
@@ -29,11 +30,16 @@ public:
     Vector2D& operator-=(const Vector2D& other);
     Vector2D operator-() const;
 
+    virtual std::string describe() const;
+
     friend Vector2D operator*(double factor, const Vector2D& v);
 
 private:
     double x_;
     double y_;
 };
+
+std::string to_string(const Vector2D& v);
+std::ostream& operator<<(std::ostream& os, const Vector2D& v);
 
 #endif // VECTOR2D_H

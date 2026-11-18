@@ -1,67 +1,44 @@
 #include <iostream>
-#include <stdexcept>
+#include <string>
 
 #include "vector2d.h"
-
-void print(const Vector2D& v) {
-    std::cout << "(" << v.x() << ", " << v.y() << ")" << std::endl;
-}
+#include "vector3d.h"
+#include "shape.h"
+#include "circle.h"
+#include "rectangle.h"
+#include "triangle.h"
 
 int main() {
-    Vector2D v(3.0, 4.0);
-    std::cout << "v = (" << v.x() << ", " << v.y() << ")" << std::endl;
-    std::cout << "length = " << v.length() << std::endl;
+    Vector2D v1(3.0, 4.0);
+    Vector2D v2(1.0, 2.0);
+    std::cout << v1 << std::endl;
+    std::cout << v2 << std::endl;
+    std::cout << "v1 = " << v1 << ", v2 = " << v2 << std::endl;
+    std::cout << "via to_string: " << to_string(v1) << std::endl;
+    std::cout << "via operator<<: " << v1 << std::endl;
 
-    Vector2D s(2.0, 3.0);
-    const Vector2D& cs = s;
-    std::cout << "scale(2.0) -> ";
-    print(cs.scale(2.0));
-    std::cout << "scale(2.0, 10.0) -> ";
-    print(s.scale(2.0, 10.0));
-    s.scale(5.0);
-    std::cout << "scale(5.0) in-place -> ";
-    print(s);
+    Vector2D v2d(3.0, 4.0);
+    Vector3D v3(1.0, 2.0, 2.0);
+    Vector2D* ptr1 = &v2d;
+    Vector2D* ptr2 = &v3;
+    std::cout << "ptr1->length() = " << ptr1->length() << std::endl;
+    std::cout << "ptr2->length() = " << ptr2->length() << std::endl;
 
-    Vector2D a(3.0, 4.0);
-    Vector2D b(6.0, 8.0);
-    Vector2D c(5.0, 0.0);
-    std::cout << std::boolalpha;
-    std::cout << "a == c: " << (a == c) << std::endl;
-    std::cout << "a != b: " << (a != b) << std::endl;
-    std::cout << "a < b: " << (a < b) << std::endl;
-    std::cout << "b > a: " << (b > a) << std::endl;
-    std::cout << "a <= c: " << (a <= c) << std::endl;
-    std::cout << "b >= a: " << (b >= a) << std::endl;
-
-    Vector2D p(1.0, 2.0);
-    Vector2D q(3.0, 4.0);
-    std::cout << "p + q = ";
-    print(p + q);
-    std::cout << "p - q = ";
-    print(p - q);
-    std::cout << "p * 3.0 = ";
-    print(p * 3.0);
-    std::cout << "p / 2.0 = ";
-    print(p / 2.0);
-    std::cout << "-q = ";
-    print(-q);
-    p += q;
-    std::cout << "p += q -> ";
-    print(p);
-    p -= q;
-    std::cout << "p -= q -> ";
-    print(p);
-    try {
-        print(q / 0.0);
-    } catch (const std::invalid_argument& e) {
-        std::cerr << "Ошибка деления: " << e.what() << std::endl;
+    Vector2D* vectors[] = { &v2d, &v3 };
+    for (Vector2D* p : vectors) {
+        std::cout << p->describe() << std::endl;
     }
 
-    Vector2D m(1.5, 2.5);
-    std::cout << "m * 2.0 = ";
-    print(m * 2.0);
-    std::cout << "2.0 * m = ";
-    print(2.0 * m);
+    Circle c(5.0);
+    Rectangle r(4.0, 6.0);
+    Triangle t(3.0, 4.0, 5.0);
+    Shape* shapes[] = { &c, &r, &t };
+    for (Shape* s : shapes) {
+        std::cout << *s << std::endl;
+    }
+
+    Shape* s = new Circle(5.0);
+    delete s;
 
     return 0;
 }

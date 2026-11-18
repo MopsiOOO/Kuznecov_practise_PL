@@ -77,6 +77,18 @@ Vector2D Vector2D::operator-() const {
     return Vector2D(-x_, -y_);
 }
 
+std::string Vector2D::describe() const {
+    return "2D vector (" + std::to_string(x_) + ", " + std::to_string(y_) + ")";
+}
+
+std::string to_string(const Vector2D& v) {
+    return "(" + std::to_string(v.x()) + ", " + std::to_string(v.y()) + ")";
+}
+std::ostream& operator<<(std::ostream& os, const Vector2D& v) {
+    os << to_string(v);
+    return os;
+}
+
 Vector2D operator*(double factor, const Vector2D& v) {
     return Vector2D(factor * v.x_, factor * v.y_);
 }
