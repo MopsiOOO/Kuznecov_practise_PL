@@ -1,0 +1,17 @@
+# Скомпилированные бинарники
+*.o
+*.obj
+*.out
+*.exe
+app
+book_app
+main
+
+# Сборочные каталоги
+build/
+cmake-build-*/
+
+# IDE
+.vscode/
+.idea/
+*.swp
