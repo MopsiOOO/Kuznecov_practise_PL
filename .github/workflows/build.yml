@@ -1,0 +1,29 @@
+name: Build and Run
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  practice:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        branch:
+          - main
+          - practise-2
+          - practise-3
+          - practise-4
+          - practise-5
+          - practise-6
+          - practise-7
+          - practise-8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.branch }}
+      - name: Сборка практической
+        run: g++ -std=c++17 -Wall -Wextra -pedantic *.cpp -o practice
+      - name: Запуск программы
+        run: ./practice
