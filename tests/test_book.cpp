@@ -97,7 +97,9 @@ void testFreeFunctions() {
           "formatBookInfo() для доступной книги");
 
     check(isClassic(warAndPeace), "isClassic(1869) == true");
-    check(!isClassic(nineteenEightyFour), "isClassic(1949) == false");
+    check(isClassic(nineteenEightyFour), "isClassic(1949) == true (раньше 1975)");
+    Book modern("Современная", "Автор", 2020);
+    check(!isClassic(modern), "isClassic(2020) == false");
 
     check(nearlyEqual(readingTime(100, 50), 2.0), "readingTime(100, 50) == 2 дня");
     check(throwsInvalidArgument([] { readingTime(100, 0); }),
