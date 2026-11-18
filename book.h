@@ -4,6 +4,7 @@
 #include <string>
 class Book {
 public:
+    Book() = default;
     Book(std::string title, std::string author, int year, int pages = 100);
 
     std::string title() const;
